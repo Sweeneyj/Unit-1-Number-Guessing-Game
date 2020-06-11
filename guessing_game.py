@@ -1,63 +1,42 @@
-"""
-Python Web Development Techdegree
-Project 1 - Number Guessing Game
---------------------------------
-
-For this first project we will be using Workspaces. 
-
-NOTE: If you strongly prefer to work locally on your own computer, you can totally do that by clicking: File -> Download Workspace in the file menu after you fork the snapshot of this workspace.
-
-"""
-
 import random
 import sys
-Guess = 0
-print("""
-  Friends, Romans, and countrymen! Welcome to Frankies Number Guessing Game! Please guess a number between 1 and 10 
-  """)
-def validate_guess():
-  global Guess 
-  Guess = input("Pick a number between 1 and 10: ")
+
+def start_game():
+  correct_number = random.randint(0, 10)
+  guess = 0
+  guess_amount = 1
+  print("Welcome to the guessing game! ")
+  try:
+    guess = int(input("Please pick a number between 1 and 10: "))
+  except ValueError:
+    print("Not a valid input. Please try again. ")
+    guess = int(input("Please pick a number between 1 and 10: "))
+  while True:
+    try:
+      if guess < correct_number:
+        guess_amount += 1         
+        guess = int(input("The correct number is larger. Please guess again. "))
+      if guess > correct_number:
+        guess_amount += 1          
+        guess = int(input("The correct number is smaller. Please guess again. "))
+      if guess == correct_number:
+        print("Nice job you got it! It took you {} attempts to get the correct answer".format(guess_amount))
+        break
+    except ValueError: 
+      print("Not a valid input, please try again.")
+      continue
+              
+  Restart = input("Would you like to play again? Please type Y or N ") 
   while True: 
     try:
-      val = int(Guess) 
-      break; 
-    except ValueError: 
-      print("This is not a number. Please enter a valid Number") 
-      Guess = input("Pick a number between 1 and 10: ") 
-def start_game():
-  CorrectNumber = random.randint(1, 10)
-  global Guess
-  GuessAmount = 1
-  Guess = int(Guess)
-  while True:
-    if Guess > CorrectNumber: 
-      Guess = input("Number is too big, guess again: ")
-      Guess = int(Guess)
-      GuessAmount = GuessAmount + 1
+      if Restart.lower() == "y": 
+        start_game()
+      if Restart.lower() == "n": 
+        print("Okay well thanks for playing!") 
+        sys.exit()  
+      if Restart != "y" or Restart != "n":
+        Restart = input("Not a valid input please try again. Type Y to play again or N to exit. ")
+    except ValueError:
+      print("Not a valid input please try again. ")
       continue
-    elif Guess < CorrectNumber: 
-      Guess = input("Number is too low, guess again: ")
-      Guess = int(Guess)
-      GuessAmount = GuessAmount + 1
-      continue
-    elif Guess == CorrectNumber: 
-      print("Got it! Nice Job It took {} tries".format(GuessAmount))
-      break
-  Restart = input("Would you like to play again? Type Y or N. ") 
-  while True: 
-    if Restart.lower() == "y": 
-      validate_guess()
-      start_game()
-    elif Restart.lower() == "n": 
-      print("Okay well thanks for playing!") 
-      sys.exit() 
-validate_guess()
 start_game()
-
-  
-  
-  
-  
-  
-  
